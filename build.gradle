@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+group 'it.uniroma1.dss'
+version '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+shadowJar.zip64 = true
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'org.apache.hadoop:hadoop-mapreduce-client-core:2.8.2'
+    implementation 'org.apache.hadoop:hadoop-common:2.8.2'
+    implementation 'com.github.umbfer:fastdoop:0e5f5d4'
+    implementation 'com.github.fingltd:4mc:master-SNAPSHOT'
+}

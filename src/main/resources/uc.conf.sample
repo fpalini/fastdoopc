@@ -1,0 +1,39 @@
+task=benchmark
+
+bench=map
+sequence.type=fastq
+
+uc.codec=dsrc
+
+# if task=compression the input is taken locally, instead of HDFS
+input=data/256MB.dsrc
+output=256MB_dsrc_m
+
+
+uc.SPRINGQ.compress.cmd=/home/hduser/codecs/spring -c
+uc.SPRINGQ.decompress.cmd=/home/hduser/codecs/spring -d
+uc.SPRINGQ.compress.ext=spring
+uc.SPRINGQ.io.input.flag=-i
+uc.SPRINGQ.io.output.flag=-o
+
+uc.DSRC.compress.cmd=/home/hduser/codecs/dsrc c -t8
+uc.DSRC.decompress.cmd=/home/hduser/codecs/dsrc d -t8
+uc.DSRC.compress.ext=dsrc
+
+uc.FQZCOMP.compress.cmd=/home/hduser/codecs/fqz_comp
+uc.FQZCOMP.decompress.cmd=/home/hduser/codecs/fqz_comp -d
+uc.FQZCOMP.compress.ext=fqz
+
+uc.SPRINGA.compress.cmd=/home/hduser/codecs/spring -c --fasta-input
+uc.SPRINGA.decompress.cmd=/home/hduser/codecs/spring -d
+uc.SPRINGA.compress.ext=spring
+uc.SPRINGA.decompress.ext=fasta
+uc.SPRINGA.io.input.flag=-i
+uc.SPRINGA.io.output.flag=-o
+
+uc.MFCOMPRESS.compress.cmd=/home/hduser/codecs/MFCompressC -t 8 -p 8
+uc.MFCOMPRESS.decompress.cmd=/home/hduser/codecs/MFCompressD -t 8
+uc.MFCOMPRESS.compress.ext=mfc
+uc.MFCOMPRESS.decompress.ext=fasta
+uc.MFCOMPRESS.io.output.flag=-o
+uc.MFCOMPRESS.io.reverse=True
