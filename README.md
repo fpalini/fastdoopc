@@ -1,13 +1,13 @@
 # FASTdoopC
 
 *FASTdoopC* is a general software framework for the efficient acquisition of FASTA/Q genomic files in a MapReduce environment.
+
 It works in two stages. In the first stage, it can be used to automatically split an input file into blocks independently compressed using a chosen compressor and uploaded to HDFS (the distributed file system used by frameworks like Hadoop and Spark). In the second stage, it can be used during a MapReduce computation to read and decompress on-the-fly and in a distributed way a file compressed during the first stage. It runs over *Apache Hadoop* (>=3.1.1, https://hadoop.apache.org/) and *Apache Spark* (https://spark.apache.org/), and requires a *Java* compliant virtual machine (>= 1.8, https://adoptopenjdk.net).
+
 Notice that the framework has been designed to take fully advantage of the *HDFS* distributed file system, even thanks to the adoption of the *FASTdoop* library. For this reason, it requires input data to be stored on *HDFS*.
 
-A copy of *FASTdoopC*, including source code, can be downloaded from: [FASTdoopC](http://www.statistica.uniroma1.it/users/uferraro/experim/FASTdoopC/fastdoopc-1.0.0.zip)
-
 ## Usage
-The software package includes a single executable jar file, **fastdoopc-1.0.0-all.jar**, that can be used both to compress input files (first stage) and to decompress them (second stage). 
+The software is released as a single executable jar file, **fastdoopc-1.0.0-all.jar**, that can be used both to compress input files (first stage) and to decompress them (second stage). 
 
 ### File compression
 In order to compress a file, the provided **fastdoopc-1.0.0-all.jar** jar must be run from the command-line, together with the *Apache Hadoop* `hadoop jar` command, using the following syntax:
@@ -91,7 +91,7 @@ Our framework provides the possibility to easily support new compression codecs,
 
 ## Currently supported codecs
 
-The following codecs have been tested with our frameworks and are included, by default, in the `src\main\resources\uc.conf.sample` configuration available in **fastdoopc-1.0.0-all.jar**:
+The following codecs have been tested with our frameworks and are included, by default, in the `src\main\resources\uc.conf.sample` configuration file:
 
 - [DSRC](https://academic.oup.com/bioinformatics/article/30/15/2213/2391485) (FASTQ)
 - [FqzComp](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0059190) (FASTQ)
@@ -100,24 +100,26 @@ The following codecs have been tested with our frameworks and are included, by d
 
 ## Datasets
 
-*FASTdoopC* has been tested by using a collection of FASTA and FASTQ files. The FASTQ files contain collection of reads extracted from the Pinus Taeda genome. The FASTA files contain collection of reads extracted from the Human genome.
+*FASTdoopC* has been tested by using two different datasets. The first type of dataset, referred to as *type 1* datasets, is a collection of FASTQ and FASTA files of different sizes. The FASTA files of these datasets contain a set of reads extracted uniformly at random from a collection of genomic sequences coming from the *Human genome*. The FASTQ files of these datasets contain a set of reads extracted uniformly at random from a collection of genomic sequences coming from the *Pinus Taeda genome*. The second type of dataset, referred to as *type 2* datasets, is a collection of FASTQ files corresponding to different coverages of the *H.sapiens genome*.
 
 The datasets can be downloaded from: [datasets](https://drive.google.com/drive/folders/1leFSikUy_lwUaCIW6TEThBueRdy4-dhr?usp=sharing)
 
-FASTQ datasets:
-- 16GB.fastq
-- 32GB.fastq
-- 64GB.fastq
-- 96GB.fastq
-
-FASTA datasets:
+Type 1 datasets (FASTA files):
 - 16GB.fasta
 - 32GB.fasta
 - 64GB.fasta
 - 96GB.fasta
 
+Type 1 datasets (FASTQ files):
+- 16GB.fastq
+- 32GB.fastq
+- 64GB.fastq
+- 96GB.fastq
 
-
+Type 2 datasets (FASTQ files):
+- hsapiens1.fastq
+- hsapiens2.fastq
+- hsapiens3.fastq
 
 ## Running on Amazon Web Services (AWS)
 
@@ -127,9 +129,7 @@ We refer the interested reader to the following link for a quick guide about the
 ## Developing an Hadoop Splittable Codec for FASTA/FASTQ files
 Our framework includes a library of classes useful to simplify and accelerate the development of a specialized Hadoop splittable compression codec. This solution can be preferred to the usage of the universal meta-codec when looking for the best performance possible.  More information are available in `README.md`.
 
-<!--
-
-<<Solo per il README.md>>
+<!-- More details here
 
 Our framework includes a library of classes able to simplify and accelerate the development of a specialized Hadoop codec in the implementation of a particular splittable compressor. It is expected that this solution would allow to obtain code that is slightly faster than the one achieved using the configuration file.
  
@@ -146,8 +146,6 @@ The user that want to support a new compressor using these classes, should neces
 In order to natively implement a compressor, the user should use the `NativeCodecDecompressor` class and implement the JNI methods used to decompress each compressed block. Moreover, The native functions should be implemented using the `splittablecodec_NativeCodecDecompressor.hpp` header file and then, it should be generated the dynamic library `libcodec.so`. As an example, see the `src/java/main/splittablecodec/NativeCodecDecompressor.java` and the `jni/src/splittablecodec_NativeCodecDecompressor.cpp` files. 
 
 Alternatively, the user can implement these methods directly in Java, specializing the `CodecDecompressor` class. As an example, see the `src/java/main/universalcodec/UniversalDecompressor.java` file.
-
-
 -->
 
 ## Benchmarking
